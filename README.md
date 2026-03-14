@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VoxAI - AI Voice Agent Studio
+
+A full-stack demo application for creating and interacting with AI voice agents. Built with Next.js, powered by OpenRouter for AI, with JWT-based authentication.
+
+## Features
+
+- **JWT Authentication** — Register/login with secure httpOnly cookie-based sessions
+- **Voice Agent Management** — Create custom agents with configurable system prompts
+- **Real-time Voice Chat** — Talk to your AI agents using browser speech recognition
+- **Text-to-Speech** — AI responses are spoken aloud via browser speech synthesis
+- **Text Mode** — Fall back to typed chat when voice isn't available
+- **Preset Agents** — Quick-start templates (assistant, tech support, language tutor, interview coach)
+
+## Tech Stack
+
+- **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS v4
+- **Auth**: JWT via `jose`, password hashing with `bcryptjs`
+- **AI**: OpenRouter API (default model: LLaMA 4 Maverick)
+- **Voice**: Web Speech API (SpeechRecognition + SpeechSynthesis)
+- **Storage**: File-based JSON (demo purposes)
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment variables:**
+
+   Copy `.env.example` to `.env.local` and add your OpenRouter API key:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Get a free API key at [openrouter.ai/keys](https://openrouter.ai/keys)
+
+3. **Run the dev server:**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open [http://localhost:3000](http://localhost:3000)** and register an account.
+
+## How It Works
+
+1. Register or log in to get a JWT session
+2. Create a voice agent (or pick a preset)
+3. Click "Start Conversation" on an agent card
+4. Tap the microphone to speak — the browser transcribes your voice
+5. Your message is sent to OpenRouter's AI with the agent's system prompt
+6. The AI's response is displayed and spoken aloud
+
+## Project Structure
+
+```
+├── app/
+│   ├── (auth)/           # Login & register pages
+│   ├── (dashboard)/      # Dashboard & voice chat pages
+│   ├── api/              # REST API routes
+│   │   ├── auth/         # register, login, me, logout
+│   │   ├── agents/       # CRUD for voice agents
+│   │   └── chat/         # OpenRouter chat completions
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── lib/
+│   ├── auth.ts           # JWT sign/verify utilities
+│   ├── db.ts             # File-based JSON storage
+│   └── openrouter.ts     # OpenRouter API client
+├── types/
+│   └── index.ts          # Shared TypeScript types
+└── middleware.ts          # Route protection
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Notes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Voice features require a browser that supports the Web Speech API (Chrome, Edge)
+- The file-based JSON database is for demo purposes — use a real database in production
+- The default AI model (`meta-llama/llama-4-maverick:free`) is free on OpenRouter
