@@ -2,7 +2,10 @@ import fs from "fs";
 import path from "path";
 import type { User, Agent } from "@/types";
 
-const DB_PATH = path.join(process.cwd(), "data");
+const IS_VERCEL = true;
+const DB_PATH = IS_VERCEL
+  ? path.join("/tmp", "voice-agent-data")
+  : path.join(process.cwd(), "data");
 const USERS_FILE = path.join(DB_PATH, "users.json");
 const AGENTS_FILE = path.join(DB_PATH, "agents.json");
 
